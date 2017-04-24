@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap    
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+ 	<sqlMap namespace = "qaboard">
+ 	  <typeAlias alias="qaBoardVO" type="kr.or.wsd.vo.QABoardVO"/>
+ 	  
+ 	  <sql id = "selectAll">
+ 	  	SELECT *
+ 	  		FROM T_QABOARD
+ 	   WHERE QA_STATUS = 'y'
+
+ 	  </sql>
+ 	  
+ 	  <sql id="searchCondition">
+ 	  	<dynamic prepend="AND">
+ 	  			<isNotEmpty property="search_keycode">
+ 					<isNotEmpty property="search_keyword">
+ 						<isEqual property="search_keycode" compareValue="TOTAL">
+ 							QA_TITLE LIKE '%'||#search_keyword#||'%' 
+ 							or QA_CONTENT LIKE '%'||#search_keyword#||'%' 
+ 							or QA_NICKNAME LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 						<isEqual property="search_keycode" compareValue="TITLE">
+ 							QA_TITLE LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 						<isEqual property="search_keycode" compareValue="CONTENT">
+ 							QA_CONTENT LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 						<isEqual property="search_keycode" compareValue="WRITER">
+ 							QA_NICKNAME LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 					</isNotEmpty>	  		
+ 	  			</isNotEmpty>
+ 	  		</dynamic>
+ 	  </sql>
+ 	  
+ 	  <select id = "qaList" resultClass="qaBoardVO" parameterClass="map">
+		SELECT B.*  	  	
+	 	  FROM (SELECT ROWNUM rnum, A.*
+	 	  		FROM (<include refid="selectAll"/>
+	 	  				<include refid="searchCondition"/>
+	 	  				ORDER BY QA_GROUP, QA_SEQ DESC) A) B
+	 	 WHERE 1=1
+	 	 <dynamic prepend="AND">
+	 	 	<isNotEmpty property="startCount">
+	 	 		<isNotEmpty property="endCount">
+	 	 			<![CDATA[
+	 	 				B.RNUM <= #startCount#
+	 	 				AND B.RNUM >= #endCount#
+	 	 			]]>
+	 	 		</isNotEmpty>
+	 	 	</isNotEmpty>
+	 	 </dynamic>
+ 		 ORDER BY B.RNUM DESC
+ 	  </select>
+ 	  
+ 	  
+ 	  <select id="qaInfo" resultClass="qaBoardVO" parameterClass="map">
+		<include refid="selectAll"/>
+      	AND QA_NO = #qa_no#
+ 	  </select>	  
+ 	  
+ 	  <update id="updateQA" parameterClass="qaBoardVO">
+ 	    UPDATE T_QABOARD
+            SET QA_TITLE = #qa_title#,
+               QA_NICKNAME = #qa_nickname#,
+               QA_CONTENT = #qa_content#
+           WHERE QA_NO = #qa_no#
+ 	  
+ 	  </update>
+ 	  
+ 	  <insert id="insertQA" parameterClass="qaBoardVO">
+ 	  <selectKey keyProperty="qa_no" resultClass="string">
+         SELECT T_QABOARD_SEQ.NEXTVAL FROM DUAL
+      </selectKey>
+ 	  	INSERT INTO T_QABOARD(QA_NO, QA_TITLE, QA_WRITER ,QA_NICKNAME,QA_CONTENT, QA_GROUP)
+	  	VALUES(#qa_no#, #qa_title#, #qa_writer#, #qa_nickname#, #qa_content#, #qa_no#)
+ 	  </insert>
+ 	  
+ 	  
+ 	  <update id="deleteQA" parameterClass="map">
+ 	  		    UPDATE T_QABOARD
+           		 SET QA_STATUS = 'n'
+        		 WHERE QA_NO = #qa_no#
+ 	  </update>
+ 	  
+ 	  <update id="updateHitCnt" parameterClass="qaBoardVO">
+         UPDATE T_QABOARD
+         SET
+            QA_HIT = NVL(QA_HIT, 0) + 1
+         WHERE
+            QA_NO = #qa_no#
+   </update>
+   
+	<select id="incrementQASeq" parameterClass="qaBoardVO" resultClass="string">
+		SELECT MAX(NVL(qa_seq,0))+1
+			FROM T_QABOARD
+		WHERE QA_GROUP = #qa_group#
+	</select>
+	
+	<update id="updateQASeq" parameterClass="qaBoardVO">
+ 	  UPDATE T_QABOARD
+ 	  	SET QA_SEQ = QA_SEQ + 1
+ 	  WHERE QA_GROUP = #qa_group#
+ 	  AND QA_SEQ > #qa_seq#  
+	</update>
+	
+	<insert id="insertReplyQAInfo" parameterClass="qaBoardVO">
+		<selectKey keyProperty="qa_no">
+         SELECT T_QABOARD_SEQ.NEXTVAL FROM DUAL
+      </selectKey>
+ 	  	INSERT INTO T_QABOARD(QA_NO, QA_TITLE, QA_WRITER ,QA_NICKNAME ,QA_CONTENT, QA_GROUP, QA_DEPTH, QA_SEQ)
+	  	VALUES(#qa_no#, #qa_title#, #qa_writer#, #qa_nickname#, #qa_content#, #qa_group#, #qa_depth#, #qa_seq#)
+ 	  </insert>
+ 	  
+ 	 <select id="totalCount" parameterClass="map" resultClass="int">
+ 	 	SELECT COUNT(QA_NO)
+ 	 		FROM T_QABOARD
+ 	 	WHERE QA_STATUS = 'y'
+ 	 	<include refid="searchCondition"/>
+ 	 	
+ 	 </select>
+	
+ 	</sqlMap>

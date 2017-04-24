@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- http://localhost/StrutsToddler/join/loginForm.do -->
+	<package name="noticeboardPkg" extends="struts-default,tiles-default" namespace="/noticeboard">
+		<action name="noticeboardList" class="kr.or.wsd.notice.controller.NoticeListAction">
+			<result type="tiles">user/noticeboard/noticeboardList</result> 
+		</action>
+		<action name="noticeboardForm">
+			<result type="tiles">user/noticeboard/noticeboardForm</result>
+		</action>
+		<action name="insertNoticeinfo" class="kr.or.wsd.notice.controller.InsertNoticeAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/noticeboard</param>
+				<param name="actionName">noticeboardList</param>
+			</result>
+		</action>
+		<action name="noticeboardView" class="kr.or.wsd.notice.controller.NoticeViewAction"
+				method="noticeboardView">
+			<result type="tiles">user/noticeboard/noticeboardView</result>		
+		</action>
+		<action name="updateNoticeinfo" class="kr.or.wsd.notice.controller.UpdateNoticeAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/noticeboard</param>
+				<param name="actionName">noticeboardList</param>
+			</result>
+		</action>
+		<action name="deleteNoticeinfo" class="kr.or.wsd.notice.controller.DeleteNoticeAction">
+			<result type="redirectAction">
+				<param name="namespace">/noticeboard</param>
+				<param name="actionName">noticeboardList</param>
+			</result>
+		</action>	
+	</package>
+	
+	<package name="ADNoticePkg" extends="struts-default,tiles-default" namespace="/ADNotice">
+		<action name="ADNoticeList" class="kr.or.wsd.notice.controller.ADNoticeListAction">
+			<result type="tiles">admin/ADNotice/ADNoticeList</result>
+		</action>
+		<action name="ADNoticeForm">
+			<result type="tiles">admin/ADNotice/ADNoticeForm</result>
+		</action>
+		<action name="ADinsertNoticeinfo" class="kr.or.wsd.notice.controller.AdInsertNoticeAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/ADNotice</param>
+				<param name="actionName">ADNoticeList</param>
+			</result>
+		</action>
+		<action name="ADNoticeView" class="kr.or.wsd.notice.controller.AdNoticeViewAction"
+				method="ADNoticeView">
+			<result type="tiles">admin/ADNotice/ADNoticeView</result>		
+		</action>
+		<action name="ADupdateNoticeinfo" class="kr.or.wsd.notice.controller.AdUpdateNoticeAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/ADNotice</param>
+				<param name="actionName">ADNoticeList</param>
+			</result>
+		</action>
+		<action name="ADdeleteNoticeinfo" class="kr.or.wsd.notice.controller.AdDeleteNoticeAction">
+			<result type="redirectAction">
+				<param name="namespace">/ADNotice</param>
+				<param name="actionName">ADNoticeList</param>
+			</result>
+		</action>	
+	</package>
+	
+</struts>

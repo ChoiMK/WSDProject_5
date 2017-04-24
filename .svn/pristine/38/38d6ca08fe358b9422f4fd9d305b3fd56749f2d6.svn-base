@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap    
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+    <sqlMap namespace="statistics">
+    	<typeAlias alias="statisticsVO" type="kr.or.wsd.vo.StatisticsVO"/>
+    	
+<!--     	회원 -->
+    	<select id="selectLike" resultClass="statisticsVO">
+    	SELECT MEM_LIKE NAME, COUNT(MEM_ID) COUNT FROM T_MEMBER
+		GROUP BY  MEM_LIKE
+    	</select>
+    	
+    	<select id="selectJob" resultClass="statisticsVO">
+    	SELECT MEM_JOB NAME, COUNT(MEM_ID) COUNT FROM T_MEMBER
+		GROUP BY  MEM_JOB
+    	</select>
+    	
+    	<select id="selectAddr" resultClass="statisticsVO">
+    	SELECT SUBSTR(MEM_ADD1,0,2) NAME, COUNT(MEM_ID) COUNT FROM T_MEMBER
+		GROUP BY  SUBSTR(MEM_ADD1,0,2)
+    	</select>
+    	
+<!--     	자유게시판 -->
+    	<select id="selectFreeHit" resultClass="statisticsVO">
+    	SELECT BO_TITLE NAME, BO_HIT COUNT FROM(SELECT ROWNUM RM, TMP.* FROM(
+  		SELECT * FROM T_FREEBOARD ORDER BY BO_HIT DESC) TMP) WHERE <![CDATA[RM<=5]]>
+    	</select>
+    	
+<!--     	Q&A -->
+    	<select id="selectQAHit" resultClass="statisticsVO">
+    	SELECT QA_TITLE NAME, QA_HIT COUNT FROM(SELECT ROWNUM RM, TMP.* FROM(
+  		SELECT * FROM T_QABOARD ORDER BY QA_HIT DESC) TMP) WHERE <![CDATA[RM<=5]]>
+    	</select>
+    	
+<!--     	자료실 -->
+    	<select id="selectRefHit" resultClass="statisticsVO">
+    	SELECT REF_TITLE NAME, REF_HIT COUNT FROM(SELECT ROWNUM RM, TMP.* FROM(
+  		SELECT * FROM T_REFERENCE ORDER BY REF_HIT DESC) TMP) WHERE <![CDATA[RM<=5]]>
+    	</select>
+    	
+    </sqlMap>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap    
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+ 	<sqlMap namespace = "notice">
+ 	  <typeAlias alias="noticeVO" type="kr.or.wsd.vo.NoticeVO"/>
+ 	  
+ 	  <resultMap class="noticeVO" id="noticeMap">
+ 	  	<result property="nt_no" column="nt_no" />
+		<result property="nt_title" column="nt_title"/>
+		<result property="nt_writer" column="nt_writer"/>
+		<result property="nt_nickname" column="nt_nickname"/>
+		<result property="nt_content" column="nt_content"/>
+		<result property="nt_hit" column="nt_hit"/>
+		<result property="nt_reg_date" column="nt_reg_date"/>
+		<result property="nt_status" column="nt_status"/>
+		
+ 	  </resultMap>
+ 	  
+ 	  <sql id = "selectAll">
+ 	  	SELECT *
+ 	  		FROM T_NOTICE
+ 	   WHERE NT_STATUS = 'y'
+
+ 	  </sql>
+ 	  
+ 	  <sql id="searchCondition">
+ 	  	<dynamic prepend="AND">
+ 	  			<isNotEmpty property="search_keycode">
+ 					<isNotEmpty property="search_keyword">
+ 						<isEqual property="search_keycode" compareValue="TOTAL">
+ 							NT_TITLE LIKE '%'||#search_keyword#||'%' 
+ 							or NT_CONTENT LIKE '%'||#search_keyword#||'%' 
+ 							or NT_NICKNAME LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 						<isEqual property="search_keycode" compareValue="TITLE">
+ 							NT_TITLE LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 						<isEqual property="search_keycode" compareValue="CONTENT">
+ 							NT_CONTENT LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 						<isEqual property="search_keycode" compareValue="WRITER">
+ 							NT_NICKNAME LIKE '%'||#search_keyword#||'%'
+ 						</isEqual>
+ 					</isNotEmpty>	  		
+ 	  			</isNotEmpty>
+ 	  		</dynamic>
+ 	  </sql>
+ 	  
+ 	  <select id = "noticeList" resultClass="noticeVO" parameterClass="map">
+		SELECT B.*  	  	
+	 	  FROM (SELECT ROWNUM rnum, A.*
+	 	  		FROM (<include refid="selectAll"/>
+	 	  				<include refid="searchCondition"/>
+	 	  				ORDER BY NT_NO ) A) B
+	 	 WHERE 1=1
+	 	 <dynamic prepend="AND">
+	 	 	<isNotEmpty property="startCount">
+	 	 		<isNotEmpty property="endCount">
+	 	 			<![CDATA[
+	 	 				B.RNUM <= #startCount#
+	 	 				AND B.RNUM >= #endCount#
+	 	 			]]>
+	 	 		</isNotEmpty>
+	 	 	</isNotEmpty>
+	 	 </dynamic>
+ 		 ORDER BY B.RNUM DESC
+ 	  </select>
+		
+ 	  
+ 	  
+ 	  <select id="noticeInfo" resultMap="noticeMap" parameterClass="map">
+<!--  	  	SELECT * -->
+<!--  	  		FROM FREEBOARD F LEFT OUTER JOIN FILEITEM I ON(F.BO_NO = I.FILE_BO_NO) -->
+		<include refid="selectAll"/>
+      	AND NT_NO = #nt_no#
+ 	  </select>	  
+ 	  
+ 	  <update id="updateNotice" parameterClass="noticeVO">
+ 	    UPDATE T_NOTICE
+            SET NT_TITLE = #nt_title#,
+            	NT_NICKNAME = #nt_nickname#,
+               NT_CONTENT = #nt_content#
+           WHERE NT_NO = #nt_no#
+ 	  
+ 	  </update>
+ 	  
+ 	  <insert id="insertNotice" parameterClass="noticeVO">
+ 	  <selectKey keyProperty="nt_no" resultClass="string">
+         SELECT T_NOTICE_SEQ.NEXTVAL FROM DUAL
+      </selectKey>
+ 	  	INSERT INTO T_NOTICE(NT_NO, NT_TITLE, NT_WRITER, NT_NICKNAME, NT_CONTENT)
+	  	VALUES(#nt_no#, #nt_title#, #nt_writer#, #nt_nickname#, #nt_content#)
+ 	  </insert>
+      
+ 	  <update id="deleteNotice" parameterClass="map">
+ 	  		    UPDATE T_NOTICE
+           		 SET NT_STATUS = 'n'
+        		 WHERE NT_NO = #nt_no#
+ 	  </update>
+ 	  
+ 	  <update id="updateHit" parameterClass="noticeVO">
+         UPDATE T_NOTICE 
+         SET
+            NT_HIT = NVL(NT_HIT, 0) + 1
+         WHERE
+            NT_NO = #nt_no#
+   </update>
+   <select id="totalCount" parameterClass="map" resultClass="int">
+      	SELECT COUNT(NT_NO)
+      		FROM T_NOTICE
+      		WHERE NT_STATUS = 'y'
+      		<include refid="searchCondition"/>
+      </select>
+	
+ 	</sqlMap>

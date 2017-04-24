@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="profile" extends="struts-default,tiles-default" namespace="/member">
+		<action name="memberProfile" class="kr.or.wsd.member.controller.MemberProfileAction">
+			<result>/WEB-INF/member/memberProfile.jsp</result>
+		</action>	
+		
+		
+		<action name="updateMemberInfo" class="kr.or.wsd.member.controller.UpdateMemberInfo">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+				<result type="redirectAction">
+					<param name="namespace">/member</param>
+					<param name="actionName">memberProfile</param>
+					<param name="message">${message}</param>
+				</result>
+		</action>
+		
+		<action name="deleteMemberInfo" class="kr.or.wsd.member.controller.DeleteMemberInfo">
+			<result type="redirectAction">
+				<param name="namespace">/member</param>
+				<param name="actionName">memberProfile</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="zipcodeSearch">
+			<result>/WEB-INF/member/zipcodeSearch.jsp</result>
+		</action>
+		
+		<action name="zipSearch" class="kr.or.wsd.member.controller.ZipSearchAction" 
+			method="search">
+		</action>
+		
+	 	<action name="memberForm">
+				<result type="tiles">user/member/memberForm</result>
+		</action>
+		
+		
+		<action name="insertMemberInfo" class="kr.or.wsd.member.controller.InsertMemberInfo">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/userMain</param>
+				<param name="actionName">user</param>
+			</result>
+		</action>
+		
+		<action name="idCheck" class="kr.or.wsd.member.controller.IdCheckAction" method="idCheck">
+			<result></result>
+		</action>
+			
+
+
+
+
+
+
+
+<!-- 		<action name="memberView" class="kr.or.ddit.member.controller.MemberViewAction" -->
+<!-- 			method="memberView"> -->
+<!-- 			<result>/WEB-INF/member/memberView.jsp</result>	 -->
+<!-- 		</action> -->
+
+
+
+<!-- 		<action name="idCheck" class="kr.or.ddit.member.controller.MemberViewAction" method="idCheck"> -->
+<!-- 			<result></result> -->
+<!-- 		</action> -->
+	</package>
+</struts>

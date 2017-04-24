@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- http://localhost/StrutsToddler/join/loginForm.do -->
+	<package name="freeboardPkg" extends="struts-default,tiles-default" namespace="/freeboard">
+		
+		<action name="freeboardList" class="kr.or.wsd.freeboard.controller.FreeboardListAction">
+			<result type="tiles">user/freeboard/freeboardList</result> 
+		</action>	
+		
+		<action name="fileDownload" class="kr.or.wsd.freeboard.controller.FileDownloadAction">
+         <result type="stream">
+            <param name="contentType">binary/octet-stream</param>
+            <param name="inputName">inputStream</param>
+            <param name="contentDisposition">${contentDisposition}</param>
+            <param name="contentLength">${contentLength}</param>
+            <param name="bufferSize">4096</param>
+         </result>
+      </action>
+		
+		<action name="freeboardForm">
+				<result type="tiles">user/freeboard/freeboardForm</result>
+		</action>
+		
+		
+		<action name="insertBoardInfo" class="kr.or.wsd.freeboard.controller.InsertBoardInfoAction">
+			<interceptor-ref name="fileUpload"></interceptor-ref>
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/freeboard</param>
+				<param name="actionName">freeboardList</param>
+			</result>
+		</action>
+		
+		<action name="freeboardView" class="kr.or.wsd.freeboard.controller.FreeboardViewAction">
+			<result type="tiles">user/freeboard/freeboardView</result>
+		</action>
+		
+		
+		<action name="updateBoardInfo" class="kr.or.wsd.freeboard.controller.UpdateBoardInfoAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/freeboard</param>
+				<param name="actionName">freeboardList</param>
+			</result>
+		</action>
+		
+		<action name="deleteBoardInfo" class="kr.or.wsd.freeboard.controller.DeleteBoardInfoAction">
+			<result type="redirectAction">
+				<param name="namespace">/freeboard</param>
+				<param name="actionName">freeboardList</param>
+			</result>
+		</action>
+		
+		<action name="freeboardReplyForm" class="kr.or.wsd.freeboard.controller.FreeboardReplyAction">
+			<result type="tiles">user/freeboard/freeboardReplyForm</result>
+		</action>
+		
+		<action name="insertFreeboardReply" class="kr.or.wsd.freeboard.controller.InsertFreeboardReplyAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/freeboard</param>
+				<param name="actionName">freeboardList</param>
+			</result>
+		</action>
+		
+		
+	</package>
+	
+	
+	<package name="adminboardPkg" extends="struts-default,tiles-default" namespace="/ADfreeboard">
+		<action name="ADfreeboardList" class="kr.or.wsd.freeboard.controller.AdFreeboardListAction">
+			<result type="tiles">admin/ADfreeboard/ADfreeboardList</result>
+		</action>
+		
+		<action name="fileDownload" class="kr.or.wsd.freeboard.controller.FileDownloadAction">
+         <result type="stream">
+            <param name="contentType">binary/octet-stream</param>
+            <param name="inputName">inputStream</param>
+            <param name="contentDisposition">${contentDisposition}</param>
+            <param name="contentLength">${contentLength}</param>
+            <param name="bufferSize">4096</param>
+         </result>
+      </action>
+		
+		<action name="ADfreeboardForm">
+			<result type="tiles">admin/ADfreeboard/ADfreeboardForm</result>
+		</action>
+		
+		<action name="ADinsertFreeboardinfo" class="kr.or.wsd.freeboard.controller.AdInsertFreeboardAction">
+			<interceptor-ref name="fileUpload"></interceptor-ref>
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/ADfreeboard</param>
+				<param name="actionName">ADfreeboardList</param>
+			</result>
+		</action>
+		
+		<action name="ADfreeboardView" class="kr.or.wsd.freeboard.controller.AdFreeboardViewAction">
+			<result type="tiles">admin/ADfreeboard/ADfreeboardView</result>
+		</action>	
+		
+		<action name="ADupdateFreeboardinfo" class="kr.or.wsd.freeboard.controller.AdUpdateFreeboardAction">
+			<interceptor-ref name="fileUpload"></interceptor-ref>
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/ADfreeboard</param>
+				<param name="actionName">ADfreeboardList</param>
+			</result>
+		</action>
+		<action name="ADdeleteFreeboardinfo" class="kr.or.wsd.freeboard.controller.AdDeleteFreeboardAction">
+			<result type="redirectAction">
+				<param name="namespace">/ADfreeboard</param>
+				<param name="actionName">ADfreeboardList</param>
+			</result>
+		</action>
+		
+		<action name="ADfreeboardReplyForm" class="kr.or.wsd.freeboard.controller.AdReplyFreeboardAction">
+			<result type="tiles">admin/ADfreeboard/ADfreeboardReplyForm</result>
+		</action>
+		
+		<action name="ADinsertFreeboardReply" class="kr.or.wsd.freeboard.controller.AdInsertReplyFreeboardAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/ADfreeboard</param>
+				<param name="actionName">ADfreeboardList</param>
+			</result>
+		</action>	
+	</package>
+</struts>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

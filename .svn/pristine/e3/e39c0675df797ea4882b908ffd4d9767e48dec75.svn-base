@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- tiles definition 대상으로 포워딩 처리 설정 : extends = "struts-default,tiles-default" -->
+	<package name="memberPkg" extends="struts-default,tiles-default" namespace="/admin">
+		<action name="memberMgr" class="kr.or.wsd.admin.controller.MemberMgrAction">
+			<result type="tiles">admin/member/memberMgr</result>
+		</action>
+		<action name="memberDetail" class="kr.or.wsd.admin.controller.MemberDetailAction">
+			<result type="tiles">admin/member/memberDetail</result>
+		</action>
+		<action name="updateMember" class="kr.or.wsd.admin.controller.UpdateMemberAction">
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/admin</param>
+				<param name="actionName">memberMgr</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="excelPkg" extends="struts-default" namespace="/excel">
+		<action name="ExcelDownload" class="kr.or.wsd.admin.controller.ExcelDownloadAction">
+			<result name="success">/WEB-INF/admin/member/ExcelDownload.jsp</result>
+		</action>
+	</package>
+</struts>

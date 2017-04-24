@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- http://localhost/StrutsToddler/join/loginForm.do -->
+	<package name="joinPkg" extends="struts-default" namespace="/join">
+		<action name="loginCheck" class="kr.or.wsd.join.controller.LoginCheckAction">
+			<result name="loginFalse" type="redirectAction">
+				<param name="namespace">/userMain</param>
+				<param name="actionName">user</param>
+				<param name="message">${message}</param>
+			</result>
+			<result name="loginSuccess" type="redirectAction">
+				<param name="namespace">/userMain</param>
+				<param name="actionName">user</param>
+			</result>
+		</action>
+		
+		<action name="logout" class="kr.or.wsd.join.controller.LogoutAction">
+			<result type="redirectAction">
+				<param name="namespace">/userMain</param>
+				<param name="actionName">user</param>
+			</result>
+		</action>
+	</package>
+	
+	
+	
+	
+	
+	
+	
+	<package name="adminJoinPkg" extends="struts-default" namespace="/admin">
+		<action name="adminLoginForm">
+			<result>/WEB-INF/admin/loginForm.jsp</result>
+		</action>	
+		<action name="loginCheck" class="kr.or.wsd.join.controller.AdminLoginCheckAction">
+			<result name="adminLoginForm" type="redirectAction">
+				<param name="namespace">/admin</param>
+				<param name="actionName">adminLoginForm</param>
+				<param name="message">${message}</param>
+			</result>
+			<result name="memberMgr" type="redirectAction">
+				<param name="namespace">/admin/member</param>
+				<param name="actionName">memberMgr</param>
+			</result>
+		</action>
+		<action name="logout" class="kr.or.wsd.join.controller.LogoutAction">
+			<!-- chain 액션에서 액션으로 포워딩할때 사용 -->
+			<result type="redirectAction">
+				<param name="namespace">/admin</param>
+				<param name="actionName">loginForm</param>
+			</result>
+		</action>
+	</package>
+	
+	
+	
+</struts>

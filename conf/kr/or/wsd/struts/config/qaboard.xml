@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="AdminQABoardPkg" extends="struts-default,tiles-default" namespace="/adminQA">
+		<action name="ADqaboardList" class="kr.or.wsd.qa.controller.QABoardListAction">
+			<result type="tiles">admin/ADqaboard/ADqaboardList</result> 
+		</action>
+		<action name="ADqaboardView" class="kr.or.wsd.qa.controller.QABoardViewAction">
+			<result type="tiles">admin/ADqaboard/ADqaboardView</result>		
+		</action>
+		
+		<action name="ADqaboardForm">
+			<result type="tiles">admin/ADqaboard/ADqaboardForm</result>
+		</action>
+		
+		<action name="insertQABoard" class="kr.or.wsd.qa.controller.InsertQABoardAction">
+				<interceptor-ref name="modelDriven"></interceptor-ref>
+				<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/adminQA</param>
+				<param name="actionName">ADqaboardList</param>
+			</result>
+		</action>
+		
+		<action name="updateQABoard" class="kr.or.wsd.qa.controller.UpdateQABoardAction">
+				<interceptor-ref name="modelDriven"></interceptor-ref>
+				<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/adminQA</param>
+				<param name="actionName">ADqaboardList</param>
+			</result>
+		</action>
+		
+		<action name="deleteQABoard" class="kr.or.wsd.qa.controller.DeleteQABoardAction">
+			<result type="redirectAction">
+				<param name="namespace">/adminQA</param>
+				<param name="actionName">ADqaboardList</param>
+			</result>
+		</action>
+		<action name="ADqaboardReplyForm" class="kr.or.wsd.qa.controller.QAReplyAction">
+			<result type="tiles">admin/ADqaboard/ADqaboardReplyForm</result>
+		</action>
+		<action name="insertQAReply" class="kr.or.wsd.qa.controller.InsertQAReplyAction">
+			<result type="redirectAction">
+				<param name="namespace">/adminQA</param>
+				<param name="actionName">ADqaboardList</param>
+			</result>
+		</action>
+		
+	</package>
+	
+	
+	<package name="userQABoardPkg" extends="struts-default,tiles-default" namespace="/userQA">
+		<action name="qaboardList" class="kr.or.wsd.qa.controller.QABoardListAction">
+			<result type="tiles">user/qaboard/qaboardList</result> 
+		</action>
+		<action name="qaboardView" class="kr.or.wsd.qa.controller.QABoardViewAction">
+			<result type="tiles">user/qaboard/qaboardView</result>		
+		</action>
+		
+		<action name="qaboardForm">
+			<result type="tiles">user/qaboard/qaboardForm</result>
+		</action>
+		
+		<action name="insertQABoard" class="kr.or.wsd.qa.controller.InsertQABoardAction">
+				<interceptor-ref name="modelDriven"></interceptor-ref>
+				<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/userQA</param>
+				<param name="actionName">qaboardList</param>
+			</result>
+		</action>
+		
+		<action name="updateQABoard" class="kr.or.wsd.qa.controller.UpdateQABoardAction">
+				<interceptor-ref name="modelDriven"></interceptor-ref>
+				<interceptor-ref name="params"></interceptor-ref>
+			<result type="redirectAction">
+				<param name="namespace">/userQA</param>
+				<param name="actionName">qaboardList</param>
+			</result>
+		</action>
+		
+		<action name="deleteQABoard" class="kr.or.wsd.qa.controller.DeleteQABoardAction">
+			<result type="redirectAction">
+				<param name="namespace">/userQA</param>
+				<param name="actionName">qaboardList</param>
+			</result>
+		</action>
+		<action name="qaboardReplyForm" class="kr.or.wsd.qa.controller.QAReplyAction">
+			<result type="tiles">user/qaboard/qaboardReplyForm</result>
+		</action>
+		<action name="insertQAReply" class="kr.or.wsd.qa.controller.InsertQAReplyAction">
+			<result type="redirectAction">
+				<param name="namespace">/userQA</param>
+				<param name="actionName">qaboardList</param>
+			</result>
+		</action>
+		
+	</package>
+	
+</struts>

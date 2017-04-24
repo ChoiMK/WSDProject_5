@@ -1,0 +1,5 @@
+# com/lucky/ibatis/SqlMapConfig.properties
+driver=oracle.jdbc.driver.OracleDriver
+url=jdbc:oracle:thin:@192.168.201.36:1521:XE
+username=teamproject
+password=java
