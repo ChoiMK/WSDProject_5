@@ -49,12 +49,11 @@
 		
 		<include file="kr/or/wsd/struts/config/freeboard.xml"></include>
 
-<!-- 	 <include file="kr/or/wsd/struts/config/member.xml"></include> -->
-<!-- 	 <include file="kr/or/wsd/struts/config/fileupload.xml"></include> -->
+		 <include file="kr/or/wsd/struts/config/member.xml"></include>
 	
  		
 			<include file="kr/or/wsd/struts/config/noticeboard.xml"></include>
-<!-- 		<include file="kr/or/wsd/struts/config/qaboard.xml"></include> -->
+			<include file="kr/or/wsd/struts/config/qaboard.xml"></include>
 			<include file="kr/or/wsd/struts/config/referenceboard.xml"></include>
 	 
 </struts>

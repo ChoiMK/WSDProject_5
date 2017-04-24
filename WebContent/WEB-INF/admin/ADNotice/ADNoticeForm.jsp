@@ -33,7 +33,7 @@ $(function(){
 			alert("제목을 입력해주세요");
 			return false;
 		}
-		var content = $('#nt_content').summernote('code');
+		 var content = $('#nt_content').summernote('code');
 		 $(this).append('<input type="hidden" name="nt_content" value="'+content+'">');
 		 $(this).append('<input type="hidden" name="nt_writer" value="${LOGIN_MEMBERINFO.mem_id}"/>');
 // 	  	 $(this).append("<input type='hidden' name='nt_nickname' value='${LOGIN_MEMBERINFO.mem_name}'/>");
